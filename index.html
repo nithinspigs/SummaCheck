@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Fact Checker With ChatGPT</title>
-    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta charset="utf-8">
+	<title>Fact Checker With ChatGPT</title>
+	<script src="jquery-3.7.1.min.js"></script>
+	
+	<script src="script.js"></script>
 </head>
+
 <body>
-    <button id="fact_check_button">Fact Check</button>
-    <button id="summarize_button">Summarize</button>
-    <div id="chatgpt_response" class="contents">ChatGPT Response: </div>
+	<label for="integerInput">Response Word Limit (0-200):</label>
+	<input type="number" id="integerInput" min="0" max="200">
+	<br>
+	<label for="highlightedbox">Highlighted Text:</label>
+	<input type="checkbox" id="highlightedbox">
+	<br>
+	<label for="childbox">Child Mode:</label>
+	<input type="checkbox" id="childbox">
+	<br>
+
+	<div style="text-align:center">
+	<button id="fact_check_button">Fact Check</button>
+	<button id="summarize_button">Summarize</button>
+	</div>
+	<br>
+
+	<div id="chatgpt_response" class="contents">ChatGPT Response: </div>
+	<br>
+	<!--Enter ChatGPT's response-->
+
 </body>
-<script src="jquery-3.7.1.min.js"></script>
-<script src="script.js"></script>
 </html>
