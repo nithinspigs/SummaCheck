@@ -7,6 +7,7 @@
     "permissions": ["scripting", "activeTab"],
     "action":{
         "default_popup": "index.html",
-        "default_title": "Fact Checker With ChatGPT"
+        "default_title": "Fact Checker With ChatGPT",
+	"default_icon": "extension_icon.png"
     }
 }
