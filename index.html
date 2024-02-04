@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 
@@ -12,16 +11,19 @@
 </head>
 
 <body>
-
 	<label for="response_word_limit">Response Word Limit (0-200):</label>
 	<input type="number" id="integerInput" min="0" max="200">
 	<br>
 	<label for="checkbox">Child Mode:</label>
 	<input type="checkbox" id="checkbox">
 	<br>
+
+	<div style="text-align:center">
 	<button id="fact_check_button" onclick="processInput('fact_check')">Fact Check</button>
 	<button id="summarize_button" onclick="processInput('summarize')">Summarize</button>
+	</div>
 	<br>
+
 	<script>
   	 function getInteger() {
 		var userInput = document.getElementById('integerInput').value;
