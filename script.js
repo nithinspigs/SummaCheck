@@ -1,3 +1,5 @@
+const YOUR_TOKEN = ""; // input your own OpenAI API key
+
 function getSelectionText() { // gets highlighted text from current window
     return window.getSelection().toString();
 }
@@ -30,14 +32,12 @@ async function getURL() { // gets the URL of the active tab
     
 }
 
-async function getResponse(isSummary, isHighlightedTextOnly, childMode, wordLimit) {
-    
-    /*
-     first, create prompt
-     */
+async function getPrompt(isSummary, isHighlightedTextOnly, childMode, wordLimit) {
     
     var prompt = "";
     var text = "";
+    
+    prompt += "In strictly under " + wordLimit + " words, ";
     
     if(childMode) {
         prompt += "explain to a child, ";
@@ -62,38 +62,65 @@ async function getResponse(isSummary, isHighlightedTextOnly, childMode, wordLimi
         
     }
     
-    console.log(prompt);
-    
-    /*
-     send prompt to ChatGPT and receive response
-     */
-    
-    (async () => {
-        const { chatgpt } = await import(chrome.runtime.getURL('lib/chatgpt.js'));
-        const response = await chatgpt.askAndGetReply(prompt);
-        console.log(response);
-    })();
+    // console.log(prompt);
+    return prompt;
     
 }
 
+async function getResponse(isSummary, isHighlightedTextOnly, childMode, wordLimit) {
+    
+    var prompt = "" + await getPrompt(isSummary, isHighlightedTextOnly, childMode, wordLimit);
+    console.log(prompt);
+    
+    // IDEA: add error checking, e.g. if token is expired, u need to sign in again
+    
+    var url = "https://api.openai.com/v1/chat/completions";
+    var bearer = 'Bearer ' + YOUR_TOKEN;
+    
+    $("#chatgpt_response").empty();
+    
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify({
+            "model": "gpt-3.5-turbo",
+            "messages": [{
+                "role": "user",
+                "content": prompt
+            }]
+        })
 
-$(document).ready(function(){
+    }).then(function(response) {
+        return response.json();
+    }).then(function(data) {
+        const response_text = data.choices[0].message.content;
+        console.log(response_text);
+        const response_template = $("<div>" + response_text + "</div>");
+        $("#chatgpt_response").append(response_template);
+    })
+    
+}
+
+$(document).ready(async function(){
     
     // using the settings page, get values for the booleans isHighlightedTextOnly and childMode, as well as int wordLimit
     /*
      setting dummy values for testing
      */
-    isHighlightedTextOnly = true;
-    childMode = true;
-    wordLimit = 200;
-    // bug: by clicking on one button, both functions run when it should only be one of them at a time? 
+    var isHighlightedTextOnly = true;
+    var childMode = true;
+    var wordLimit = 30;
+
     var fact_check_button = document.getElementById("fact_check_button");
-    fact_check_button.addEventListener('click', function(){
+    fact_check_button.addEventListener('click', async function(){
         getResponse(false, true, childMode, wordLimit);
     });
     
     var summarize_button = document.getElementById("summarize_button");
-    summarize_button.addEventListener('click', function(){
+    summarize_button.addEventListener('click', async function(){
         getResponse(true, isHighlightedTextOnly, childMode, wordLimit);
     });
     

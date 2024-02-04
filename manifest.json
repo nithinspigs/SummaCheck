@@ -4,6 +4,7 @@
     "description": "fact-check information on the web using ChatGPT",
     "manifest_version": 3,
     "author": "Nithin Chilakapati and Mia Gonzalgo",
+    "host_permissions": ["https://api.openai.com/"],
     "permissions": ["scripting", "activeTab"],
     "action":{
         "default_popup": "index.html",
