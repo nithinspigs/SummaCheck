@@ -24,7 +24,11 @@ body {
 	background-color: #63c259;
 }
 
-#chatgpt_response {
+#chatgpt_response_title {
 	font-weight: bold;
 	text-align: center;
+}
+
+#chatgpt_response {
+    text-align: center;
 }
