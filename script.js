@@ -57,8 +57,12 @@ async function getResponse(isSummary, isHighlightedTextOnly, childMode, wordLimi
         
         // if not only highlighted text, we know that it must be trying to summarize the whole website
         text = await getURL();
-        prompt += "summarize the contents of the website: ";
-        prompt += text;
+        if(isSummary) {
+		prompt += "summarize the contents of the website: ";
+        	prompt += text;
+	} else {
+		prompt+= "Cannot fact check the entire web page. Please highlight text."
+	}
         
     }
     
@@ -70,15 +74,44 @@ async function getResponse(isSummary, isHighlightedTextOnly, childMode, wordLimi
     
 }
 
+function processArgsFactCheck() {
+	var wordLimit = document.getElementById("integerInput").value;
+	if (wordLimit === '' || isNaN(wordLimit) || parseInt(wordLimit) !== parseFloat(wordLimit) || wordLimit < 0 || wordLimit > 200) {
+		wordLimit = 200;
+	}
+	var childMode = document.getElementById("childbox").checked;
+	var isHighlightedTextOnly = document.getElementById("highlightedbox").checked;
+	
+	console.log("Word Limit: "+wordLimit);
+	console.log("Highlight: "+isHighlightedTextOnly);
+	console.log("Mode: "+childMode);
+
+	getResponse(false, isHighlightedTextOnly, childMode, wordLimit);
+}
+
+function processArgsSummarize() {
+	var wordLimit = document.getElementById("integerInput").value;
+	if (wordLimit === '' || isNaN(wordLimit) || parseInt(wordLimit) !== parseFloat(wordLimit) || wordLimit < 0 || wordLimit > 200) {
+		wordLimit = 200;
+	}
+	var childMode = document.getElementById("childbox").checked;
+	var isHighlightedTextOnly = document.getElementById("highlightedbox").checked;
+	
+	console.log("Word Limit: "+wordLimit);
+	console.log("Highlight: "+isHighlightedTextOnly);
+	console.log("Mode: "+childMode);
+
+	getResponse(true, isHighlightedTextOnly, childMode, wordLimit);
+}
+
 $(document).ready(function(){
-    // using the settings page, get values for the booleans isHighlightedTextOnly and childMode, as well as int wordLimit
-    /*
-     setting dummy values for testing
-     */
-    isHighlightedTextOnly = true;
-    childMode = true;
-    wordLimit = 200;
-    // bug: by clicking on one button, both functions run when it should only be one of them at a time? 
-    document.getElementById("fact_check_button").onclick = getResponse(false, true, childMode, wordLimit);
-    document.getElementById("summarize_button").onclick = getResponse(true, isHighlightedTextOnly, childMode, wordLimit);
+	var fact_check_button = document.getElementById("fact_check_button");
+	fact_check_button.addEventListener('click', function(){
+		processArgsFactCheck();
+	});
+
+	var summarize_button = document.getElementById("summarize_button");
+	summarize_button.addEventListener('click', function(){
+		processArgsSummarize();
+	});
 })
