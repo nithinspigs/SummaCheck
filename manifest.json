@@ -8,5 +8,9 @@
     "action":{
         "default_popup": "index.html",
         "default_title": "Fact Checker With ChatGPT"
-    }
+    },
+    "web_accessible_resources": [{
+        "matches": ["<all_urls>"],
+        "resources": ["lib/chatgpt.js"]
+    }]
 }
