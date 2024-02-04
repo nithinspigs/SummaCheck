@@ -1,14 +1,44 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Fact Checker With ChatGPT</title>
-    <meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<meta charset="utf-8">
+	<title>Fact Checker With ChatGPT</title>
+	<script src="jquery-3.7.1.min.js"></script>
+	<script src="checkboxscript.js"></script>
+	<script src="script.js"></script>
 </head>
+
 <body>
-    <button id="fact_check_button">Fact Check</button>
-    <button id="summarize_button">Summarize</button>
-    <div id="chatgpt_response" class="contents">ChatGPT Response: </div>
+
+	<label for="response_word_limit">Response Word Limit (0-200):</label>
+	<input type="number" id="integerInput" min="0" max="200">
+	<br>
+	<label for="checkbox">Child Mode:</label>
+	<input type="checkbox" id="checkbox">
+	<br>
+	<button id="fact_check_button" onclick="processInput('fact_check')">Fact Check</button>
+	<button id="summarize_button" onclick="processInput('summarize')">Summarize</button>
+	<br>
+	<script>
+  	 function getInteger() {
+		var userInput = document.getElementById('integerInput').value;
+		if (userInput === '' || isNaN(userInput) || parseInt(userInput) !== parseFloat(userInput)) {
+			userInput = 200;
+		}
+		return userInput;
+	 }
+	 function processInput(action) {
+		var userInput = getInteger();
+		var enableCheckbox = document.getElementById('checkbox').checked;
+  	 }
+	</script>
+
+	<div id="chatgpt_response" class="contents">ChatGPT Response: </div>
+	<br>
+	<!--Enter ChatGPT's response-->
+
 </body>
-<script src="jquery-3.7.1.min.js"></script>
-<script src="script.js"></script>
 </html>
